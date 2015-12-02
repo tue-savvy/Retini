@@ -171,10 +171,11 @@
 - (void)resize3x:(NSString *)fileName
 {
 	NSImage *original = [[NSImage alloc] initWithContentsOfFile:fileName];
-	NSImage *newImg2x = [self imageResize:[original copy] newSize:NSMakeSize(original.size.width * 2, original.size.height * 2)];
+    CGSize originalSize = CGSizeMake(original.size.width / 3, original.size.height / 3);
+	NSImage *newImg2x = [self imageResize:[original copy] newSize:NSMakeSize(originalSize.width * 2, originalSize.height * 2)];
 	
 	if([self saveImage:newImg2x toPath:[fileName stringByReplacingOccurrencesOfString:@"@3x" withString:@"@2x"]]){
-		NSImage *newImg = [self imageResize:[original copy] newSize:NSMakeSize(original.size.width, original.size.height)];
+		NSImage *newImg = [self imageResize:[original copy] newSize:NSMakeSize(originalSize.width, originalSize.height)];
 		[self saveImage:newImg toPath:[fileName stringByReplacingOccurrencesOfString:@"@3x" withString:@""]];
 	}
 	
@@ -186,7 +187,8 @@
 - (void)resize2x:(NSString *)fileName
 {
 	NSImage *original = [[NSImage alloc] initWithContentsOfFile:fileName];
-	NSImage *newImg = [self imageResize:original newSize:NSMakeSize(original.size.width, original.size.height)];
+    CGSize originalSize = CGSizeMake(original.size.width / 2, original.size.height / 2);
+	NSImage *newImg = [self imageResize:original newSize:NSMakeSize(originalSize.width, originalSize.height)];
 	
 	[self saveImage:newImg toPath:[fileName stringByReplacingOccurrencesOfString:@"@2x" withString:@""]];
 	
